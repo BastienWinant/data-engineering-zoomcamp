@@ -1,0 +1,8 @@
+FROM python:3.9
+
+RUN pip install pandas psycopg2-binary sqlalchemy argparse
+
+WORKDIR /app
+COPY data-ingest-csv.py data-ingest-csv.py
+
+ENTRYPOINT [ "python", "data-ingest-csv.py" ]

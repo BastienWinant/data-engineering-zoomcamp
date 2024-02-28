@@ -1,0 +1,8 @@
+FROM python:3.9
+
+RUN pip install pyarrow psycopg2-binary sqlalchemy argparse
+
+WORKDIR /app
+COPY data-ingest-parquet.py data-ingest-parquet.py
+
+ENTRYPOINT [ "python", "data-ingest-parquet.py" ]
