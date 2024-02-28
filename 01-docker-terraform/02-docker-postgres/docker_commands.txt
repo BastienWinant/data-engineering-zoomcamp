@@ -1,0 +1,8 @@
+# fetch and run basic image
+docker run --rm hello-world
+
+# fetch and run ubuntu bash interactively with bash entry point
+docker run -it --rm ubuntu bash
+
+
+
