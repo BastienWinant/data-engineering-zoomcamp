@@ -1,4 +1,4 @@
-import pyarrow.parquet as pq
+import pandas as pd
 import subprocess
 from argparse import ArgumentParser
 from sqlalchemy import create_engine
@@ -44,20 +44,19 @@ def main(params):
   db = params.db
   table = params.table
   url = params.url
-  local_file = "temp.parquet"
+  local_file = "temp.csv"
 
   if schema:
     createSchema(params)
 
   # download a local copy of the target file
   downloadFile(url, local_file)
-  parquet_file = pq.ParquetFile(local_file)
 
   engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db}")
   with engine.connect() as connection:
-    for i, batch in enumerate(parquet_file.iter_batches(batch_size=100000, use_pandas_metadata=True), 1):
+    reader = pd.read_csv(local_file, iterator=True, chunksize=100000)
+    for i, df in enumerate(reader, 1):
       t_start = time()
-      df = batch.to_pandas()
       
       mode = "replace" if i == 1 else "append"
       df.to_sql(name=table, con=connection, schema=schema, if_exists=mode)
