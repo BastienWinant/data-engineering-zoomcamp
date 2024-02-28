@@ -4,5 +4,17 @@ docker run --rm hello-world
 # fetch and run ubuntu bash interactively with bash entry point
 docker run -it --rm ubuntu bash
 
+# build an image from current directy docker file
+docker build -f Dockerfile -t build pandas:test .
 
-
+# python file to run the ingest script against the local db
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+python data-ingest-parquet.py \
+  --host localhost \
+  --port 5432 \
+  --db ny_taxi \
+  --schema taxi_trips \
+  --table green_taxi \
+  --user postgres \
+  --password postgres \
+  --url=${URL}
