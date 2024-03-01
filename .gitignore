@@ -357,7 +357,8 @@ node_modules
 scratch*
 /mage_data*
 *secrets*.json
-magic-zoomcamp
+# magic-zoomcamp
+data-engineering-zoomcamp
 
 ny_taxi_postgres_data
 *.json

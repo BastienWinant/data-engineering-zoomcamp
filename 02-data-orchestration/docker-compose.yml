@@ -34,6 +34,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - ${POSTGRES_PORT_LOCAL}:${POSTGRES_PORT_CONTAINER}
+    volumes:
+      - "./ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
   pgadmin:
     image: dpage/pgadmin4
     restart: on-failure
@@ -45,3 +47,7 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - ${PGADMIN_PORT_LOCAL}:${PGADMIN_PORT_CONTAINER}
+    depends_on:
+      - postgres
+    links:
+      - "postgres:database"
