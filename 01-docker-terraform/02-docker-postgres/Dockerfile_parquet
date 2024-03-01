@@ -1,6 +1,7 @@
 FROM python:3.9
 
-RUN pip install pyarrow psycopg2-binary sqlalchemy argparse
+RUN apt-get install curl
+RUN pip install pandas pyarrow psycopg2-binary sqlalchemy argparse
 
 WORKDIR /app
 COPY data-ingest-parquet.py data-ingest-parquet.py
