@@ -35,6 +35,6 @@ resource "google_storage_bucket" "gcs_bucket" {
 # GOOGLE BIGQUERY DATASET
 resource "google_bigquery_dataset" "bigquery_dataset" {
   dataset_id    = var.bigquery_dataset
-  location      = "EU"
+  location      = var.location
   delete_contents_on_destroy = true
 }
