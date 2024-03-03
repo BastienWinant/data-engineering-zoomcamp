@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: staging
+    database: grand-incentive-415912
+    schema: trips_data_all
+
+    tables:
+      - name: green_tripdata
