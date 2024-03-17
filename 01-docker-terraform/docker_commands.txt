@@ -1,0 +1,43 @@
+# run an image and remove
+docker run --rm <image name>:<tag>
+docker run --rm -it <image name>:<tag>
+e.g.: docker run --rm -it python:3.9
+
+# run a container with command line args
+e.g.: docker run --rm -it <image name>:<tag> <args>
+
+# build and rum image from Dockerfile in current folder
+docker build -t <image name>:<tag> .
+
+# create and run the ingestion scripts locally
+URL="https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv"
+python data-ingest-csv.py \
+  --url $URL \
+  --env .localenv \
+  --table taxi_zones
+
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+python data-ingest-parquet.py \
+  --url $URL \
+  --env .localenv \
+  --table yellow_taxi_rides
+
+
+# create and run the ingestion scripts in the docker compose network
+docker build -f Dockerfile_csv_ingest -t taxi_zones_ingest:v001 .
+URL="https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv"
+
+docker run -it --rm --network=01-docker-terraform_default \
+  taxi_zones_ingest:v001 \
+  --url $URL \
+  --env .env \
+  --table taxi_zones
+
+docker build -f Dockerfile_parquet_ingest -t taxi_rides_ingest:v001 .
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+
+docker run -it --rm --network=01-docker-terraform_default \
+  taxi_rides_ingest:v001 \
+  --url $URL \
+  --env .env \
+  --table yellow_taxi_rides
