@@ -22,6 +22,11 @@ python data-ingest-parquet.py \
   --env local.env \
   --table yellow_taxi_rides
 
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2021-01.parquet"
+python data-ingest-parquet.py \
+  --url $URL \
+  --env local.env \
+  --table green_taxi_rides
 
 # create and run the ingestion scripts in the docker compose network
 docker build -f Dockerfile_csv_ingest -t taxi_zones_ingest:v001 .
@@ -41,3 +46,11 @@ docker run -it --rm --network=01-docker-terraform_default \
   --url $URL \
   --env .env \
   --table yellow_taxi_rides
+
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2021-01.parquet"
+
+docker run -it --rm --network=01-docker-terraform_default \
+  taxi_rides_ingest:v001 \
+  --url $URL \
+  --env .env \
+  --table green_taxi_rides
