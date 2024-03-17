@@ -14,6 +14,7 @@ services:
       - ./ny_taxi_postgres_data:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4
+    container_name: ${PGADMIN_HOSTNAME}
     env_file:
       - .env
     environment:
