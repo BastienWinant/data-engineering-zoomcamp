@@ -362,4 +362,5 @@ data-engineering-zoomcamp
 
 ny_taxi_postgres_data
 *.json
+*.env
 01-docker-terraform/.localenv
